@@ -15,6 +15,8 @@ env/
 whatsapp_session/       # your logged-in WhatsApp session
 uploads/                 # uploaded number files & attachments
 send_log*.csv            # logs contain real phone numbers
+test_log.csv
+test_numbers.csv
 *.log
 
 # --- Flask ---
