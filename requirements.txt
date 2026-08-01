@@ -1,0 +1,10 @@
+selenium
+webdriver-manager
+pandas
+openpyxl
+phonenumbers
+pillow
+tqdm
+pyperclip
+python-dotenv
+flask

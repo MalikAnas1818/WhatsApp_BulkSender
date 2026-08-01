@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WA BulkSender</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="noise-overlay"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">
+      <span class="ring ring-1"></span>
+      <span class="ring ring-2"></span>
+      <span class="dot"></span>
+    </span>
+    <span class="brand-name">WA <strong>BulkSender</strong></span>
+  </div>
+  <div class="brand-tag">one message &rarr; every contact</div>
+</header>
+
+<main class="wrap">
+
+  <!-- SIGNAL STEP INDICATOR -->
+  <div class="signal-steps" id="signalSteps">
+    <div class="signal-step active" data-step="1">
+      <div class="bars"><i></i><i></i><i></i><i></i></div>
+      <span>Add numbers</span>
+    </div>
+    <div class="signal-step" data-step="2">
+      <div class="bars"><i></i><i></i><i></i><i></i></div>
+      <span>Compose</span>
+    </div>
+    <div class="signal-step" data-step="3">
+      <div class="bars"><i></i><i></i><i></i><i></i></div>
+      <span>Preview</span>
+    </div>
+    <div class="signal-step" data-step="4">
+      <div class="bars"><i></i><i></i><i></i><i></i></div>
+      <span>Send</span>
+    </div>
+  </div>
+
+  <!-- STEP 1: ADD NUMBERS -->
+  <section class="panel" id="step-1">
+    <h1 class="panel-title">Where are your numbers coming from?</h1>
+    <p class="panel-sub">Paste a list, or upload a CSV / Excel file. Any country works.</p>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="paste">Paste numbers</button>
+      <button class="tab" data-tab="file">Upload file</button>
+    </div>
+
+    <div class="tab-panel active" data-tab-panel="paste">
+      <textarea id="pasteArea" placeholder="+92 305 9767267&#10;+1 415 555 2671&#10;+44 7911 123456&#10;...one per line, or comma-separated"></textarea>
+    </div>
+
+    <div class="tab-panel" data-tab-panel="file">
+      <label class="dropzone" id="dropzone" for="fileInput">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0-12 4 4m-4-4-4 4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span id="dropzoneText">Drop a .csv or .xlsx file, or click to browse</span>
+      </label>
+      <input type="file" id="fileInput" accept=".csv,.xlsx,.xls" hidden>
+    </div>
+
+    <div class="region-row">
+      <label for="defaultRegion">If some numbers have no country code, assume:</label>
+      <input type="text" id="defaultRegion" maxlength="2" placeholder="e.g. PK, US, IN" style="text-transform:uppercase">
+    </div>
+
+    <div class="found-strip" id="foundStrip" style="display:none">
+      <span id="foundCount">0</span> numbers found
+    </div>
+
+    <div class="actions">
+      <button class="btn-primary" id="toStep2">Validate &amp; continue &rarr;</button>
+    </div>
+  </section>
+
+  <!-- STEP 2: COMPOSE -->
+  <section class="panel hidden" id="step-2">
+    <h1 class="panel-title">What should it say?</h1>
+    <p class="panel-sub"><span id="validCountLabel">0</span> valid numbers ready. Write the message every one of them will receive.</p>
+
+    <textarea id="messageArea" placeholder="Type your message here..."></textarea>
+
+    <div class="attach-row">
+      <label class="attach-btn" for="attachInput">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 11.5 12.5 20a4 4 0 0 1-5.6-5.6L15 6.3a2.6 2.6 0 0 1 3.7 3.7L10.6 18a1.2 1.2 0 0 1-1.7-1.7l7-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Attach a file (optional)
+      </label>
+      <input type="file" id="attachInput" hidden>
+      <span id="attachName" class="attach-name"></span>
+    </div>
+
+    <div class="actions split">
+      <button class="btn-ghost" id="backTo1">&larr; back</button>
+      <button class="btn-primary" id="toStep3">Preview &rarr;</button>
+    </div>
+  </section>
+
+  <!-- STEP 3: PREVIEW -->
+  <section class="panel hidden" id="step-3">
+    <h1 class="panel-title">Last look before it goes out</h1>
+    <p class="panel-sub">Check the count and the message. Once you send, it starts reaching real people.</p>
+
+    <div class="preview-grid">
+      <div class="preview-card">
+        <span class="preview-num" id="previewValidCount">0</span>
+        <span class="preview-label">valid recipients</span>
+      </div>
+      <div class="preview-card muted">
+        <span class="preview-num" id="previewInvalidCount">0</span>
+        <span class="preview-label">skipped (invalid)</span>
+      </div>
+    </div>
+
+    <div class="msg-preview">
+      <div class="msg-preview-head">Message</div>
+      <div class="msg-preview-body" id="previewMessage"></div>
+      <div class="msg-preview-attach" id="previewAttach" style="display:none"></div>
+    </div>
+
+    <div class="number-preview">
+      <div class="number-preview-head">First few recipients</div>
+      <div class="number-chip-list" id="numberChipList"></div>
+    </div>
+
+    <div class="actions split">
+      <button class="btn-ghost" id="backTo2">&larr; back</button>
+      <button class="btn-send" id="toStep4">Send to <span id="sendCount">0</span> numbers</button>
+    </div>
+  </section>
+
+  <!-- STEP 4: SENDING -->
+  <section class="panel hidden" id="step-4">
+    <h1 class="panel-title" id="sendingTitle">Getting ready to send</h1>
+    <p class="panel-sub" id="sendingSub">A Chrome window will open. Scan the QR code with WhatsApp on your phone if asked.</p>
+
+    <div class="progress-outer">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="progress-stats">
+      <span><strong id="sentCount">0</strong> sent</span>
+      <span class="fail"><strong id="failCount">0</strong> failed</span>
+      <span><strong id="totalCount">0</strong> total</span>
+    </div>
+
+    <div class="log-feed" id="logFeed"></div>
+
+    <div class="actions split">
+      <button class="btn-ghost" id="cancelSend">Cancel</button>
+      <button class="btn-primary" id="downloadLog" style="display:none">Download log</button>
+    </div>
+  </section>
+
+</main>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

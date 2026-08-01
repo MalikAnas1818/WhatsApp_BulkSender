@@ -1,0 +1,23 @@
+Number,Status,Detail,Timestamp
++923279115785,Success,"Sent as text only (attachment failed: Message: 
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff6b6a40d25+155a5]
+	chromedriver!GetHandleVerifier [0x7ff6b6a40d80+15600]
+	chromedriver!(No symbol) [0x7ff6b659594d]
+	chromedriver!(No symbol) [0x7ff6b65f08e9]
+	chromedriver!(No symbol) [0x7ff6b65f0bec]
+	chromedriver!(No symbol) [0x7ff6b6641437]
+	chromedriver!(No symbol) [0x7ff6b663e01b]
+	chromedriver!(No symbol) [0x7ff6b65e2e6c]
+	chromedriver!(No symbol) [0x7ff6b65e3d93]
+	chromedriver!GetHandleVerifier [0x7ff6b7026431+5facb1]
+	chromedriver!GetHandleVerifier [0x7ff6b7020a9b+5f531b]
+	chromedriver!GetHandleVerifier [0x7ff6b7045865+61a0e5]
+	chromedriver!GetHandleVerifier [0x7ff6b6a5dace+3234e]
+	chromedriver!GetHandleVerifier [0x7ff6b6a6661c+3ae9c]
+	chromedriver!GetHandleVerifier [0x7ff6b6a4ab74+1f3f4]
+	chromedriver!GetHandleVerifier [0x7ff6b6a4ad04+1f584]
+	chromedriver!GetHandleVerifier [0x7ff6b6a2d9d7+2257]
+	KERNEL32!BaseThreadInitThunk [0x7fff92d97374+14]
+	ntdll!RtlUserThreadStart [0x7fff92f7cc91+21]
+)",2026-07-31 16:59:26

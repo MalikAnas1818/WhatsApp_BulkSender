@@ -1,0 +1,31 @@
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.pytest_cache/
+
+# --- Virtual environment ---
+venv/
+env/
+.venv/
+
+# --- Sensitive / runtime data (DO NOT COMMIT) ---
+whatsapp_session/       # your logged-in WhatsApp session
+uploads/                 # uploaded number files & attachments
+send_log*.csv            # logs contain real phone numbers
+*.log
+
+# --- Flask ---
+instance/
+.flaskenv
+
+# --- OS / Editor junk ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# --- Environment variables (if you add any later) ---
+.env
